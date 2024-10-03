@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 9/25/2024
+# Last updated: 9/26/2024
 # Notes: Merge PulseNet 2.0 data with PHI
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -40,8 +40,15 @@ merged_data <- merged_data %>% purrr::discard(~sum(is.na(.x))/length(.x)*100 == 
 # Formatting dates
 merged_data$dob <- as.Date(merged_data$dob,
                            format = "%m/%d/%y")
+merged_data$isolat_date <- as.Date(merged_data$isolat_date,
+                           format = "%m/%d/%y")
+merged_data$received_date <- as.Date(merged_data$received_date,
+                                   format = "%m/%d/%y")
+merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
+                                   format = "%m/%d/%y")
 
 
 ## Write out data
 # Change file name!
 write.xlsx(merged_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/campyv3.xlsx")
+
