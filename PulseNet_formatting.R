@@ -7,17 +7,16 @@
 ## Load packages
 rm(list = ls())
 pacman::p_load(
-  tidyverse,  # data manipulation
-  janitor,    # clean column names
-  readxl,     # read and write Excel files
-  writexl,    # write Excel files
-  lubridate   # date formatting
+  tidyverse, # data manipulation
+  janitor,   # clean column names
+  readxl,    # read and write Excel files
+  lubridate  # date formatting
 )
 
 ## Read data
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
-lims <- read_excel("C:/Jenni R Scripts/Beginning data.xls", col_names = T, skip = 1)
+lims <- read_xls("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712v2.xls", col_names = T, skip = 1)
 lims <- janitor::clean_names(lims)
 
 ## Create/clean variables
@@ -30,8 +29,8 @@ lims$SourceState <- "UT"
 lims$SourceType <- "Human"
 
 # Format age variables
-lims$PatientAgeDays	<- ""
-lims$PatientAgeMonths	<- ifelse(grepl("mo", lims$age), lims$age, "")
+lims$PatientAgeDays <- ""
+lims$PatientAgeMonths <- ifelse(grepl("mo", lims$age), lims$age, "")
 lims$PatientAgeMonths <- gsub("mo", "", lims$PatientAgeMonths)
 lims$PatientAgeYears <- ifelse(grepl("mo", lims$age) == F, lims$age, "")
 
@@ -49,7 +48,7 @@ lims$IsolatDate <- format(ymd(lims$IsolatDate), "%Y-%m-%d")
 # Received Date
 lims$date_received <- as.character(lims$date_received)
 lims$ReceivedDate <- sub(" \\d{2}:\\d{2}:\\d{2}$", "", lims$date_received)
-lims$ReceivedDate <- format(ymd(lims$ReceivedDate), "%m/%d/%Y")
+lims$ReceivedDate <- format(ymd(lims$ReceivedDate), "%Y-%m-%d")
 # Lab Received Date?
 lims$WGS_Lab_ReceivedDate <- ""
 
@@ -67,17 +66,18 @@ lims <- mutate(lims,
 lims$SequencerRun_id <- ""
 
 
-
 ## Select columns
-cleaned_data <- lims %>% select(Key, SourceCountry, SourceState, SourceType,	
+cleaned_data <- lims %>% select(Key, SourceCountry, SourceState, SourceType,
                                 PatientAgeDays, PatientAgeMonths, PatientAgeYears,
                                 PatientSex, SourceSite, IsolatDate, ReceivedDate,
-                                WGS_Lab_ReceivedDate,	Genus, SequencerRun_id)
+                                WGS_Lab_ReceivedDate, Genus, SequencerRun_id)
 
 # Remove footer
 cleaned_data <- cleaned_data %>% filter(Key != "UT_Folder_Summary_Test_PFGE.rpt")
 
 
 ## Write finished data
-write_xlsx(cleaned_data, "C:/Jenni R Scripts/Jenni-end-data-test.xlsx")
+write.xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712readyfor2.0.xlsx")
+
+
 
