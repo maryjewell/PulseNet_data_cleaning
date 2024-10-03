@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 9/30/2024
+# Last updated: 10/3/2024
 # Notes: Format PulseNet 2.0 data from LIMS export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -9,7 +9,8 @@ rm(list = ls())
 pacman::p_load(
   tidyverse, # data manipulation
   janitor,   # clean column names
-  readxl,    # read and write Excel files
+  readxl,    # read Excel files
+  writexl,   # write Excel files
   lubridate  # date formatting
 )
 
@@ -77,7 +78,7 @@ cleaned_data <- cleaned_data %>% filter(Key != "UT_Folder_Summary_Test_PFGE.rpt"
 
 
 ## Write finished data
-write.xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712readyfor2.0.xlsx")
+write_xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712readyfor2.0.xlsx")
 
 
 
