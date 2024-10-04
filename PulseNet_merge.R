@@ -24,8 +24,13 @@ phi <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_10_02_2024.
 pulsenet <- janitor::clean_names(pulsenet)
 phi <- janitor::clean_names(phi)
 
-## Select relevant column names from Epi NGS Pending List
+## Select relevant column names from each file
 phi <- phi %>% select(sample_number, last_name, first_name, dob, customer_name)
+
+pulsenet <- pulsenet %>% select(key, source_type, source_site, patient_sex, patientageyears, 
+                                patientagemonths, isolat_date, received_date, serotype_wgs, 
+                                date_published, allele_code, outbreak, pulse_net_upload_date, 
+                                wgs_id, ncbi_accession, type_details, rep_code, source_state)
 
 ## Merge data
 merged_data <- merge(pulsenet, phi,
@@ -38,8 +43,10 @@ merged_data <- merge(pulsenet, phi,
 merged_data <- merged_data %>% purrr::discard(~sum(is.na(.x))/length(.x)*100 == 100)
 
 # Formatting dates
-merged_data$dob <- as.Date(merged_data$dob,
-                           format = "%m/%d/%y")
+
+merged_data$dob <- as.POSIXct(merged_data$dob, format="%m/%d/%Y %I:%M:%S %p")
+merged_data$dob <- format(merged_data$dob, "%m/%d/%Y")
+
 merged_data$isolat_date <- as.Date(merged_data$isolat_date,
                                    format = "%m/%d/%y")
 merged_data$received_date <- as.Date(merged_data$received_date,
@@ -48,7 +55,9 @@ merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
                                              format = "%m/%d/%y")
 
 
+# Order final data by matching ids with pulsenet data
+ordered_data <- merged_data[match(pulsenet$key, merged_data$key), ]
 ## Write out data
 # Change file name!
-write.xlsx(merged_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/EHEC R results.xlsx")
+write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/EHEC R results.xlsx")
 
