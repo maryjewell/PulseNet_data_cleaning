@@ -27,10 +27,10 @@ phi <- janitor::clean_names(phi)
 ## Select relevant column names from each file
 phi <- phi %>% select(sample_number, last_name, first_name, dob, customer_name)
 
-pulsenet <- pulsenet %>% select(key, source_type, source_site, patient_sex, patientageyears, 
-                                patientagemonths, isolat_date, received_date, serotype_wgs, 
-                                date_published, allele_code, outbreak, pulse_net_upload_date, 
-                                wgs_id, ncbi_accession, type_details, rep_code, source_state)
+# pulsenet <- pulsenet %>% select(key, source_type, source_site, patient_sex, patientageyears, 
+#                                 patientagemonths, isolat_date, received_date, serotype_wgs, 
+#                                 date_published, allele_code, outbreak, pulse_net_upload_date, 
+#                                 wgs_id, ncbi_accession, type_details, rep_code, source_state)
 
 ## Merge data
 merged_data <- merge(pulsenet, phi,
