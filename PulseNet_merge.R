@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 9/26/2024
+# Last updated: 10/4/2024
 # Notes: Merge PulseNet 2.0 data with PHI
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
