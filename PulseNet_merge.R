@@ -17,8 +17,8 @@ pacman::p_load(
 ## Read data
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
-pulsenet <- read_excel("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/PulseNet 2.0/Export report from PN 2.0/Campy 9.20.24.xlsx")
-phi <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_09_20_2024.csv")
+pulsenet <- read_excel("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/Salmonella PN 2.0 10.3.24.xlsx")
+phi <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_10_02_2024.csv")
 
 ## Clean column names
 pulsenet <- janitor::clean_names(pulsenet)
@@ -41,14 +41,14 @@ merged_data <- merged_data %>% purrr::discard(~sum(is.na(.x))/length(.x)*100 == 
 merged_data$dob <- as.Date(merged_data$dob,
                            format = "%m/%d/%y")
 merged_data$isolat_date <- as.Date(merged_data$isolat_date,
-                           format = "%m/%d/%y")
+                                   format = "%m/%d/%y")
 merged_data$received_date <- as.Date(merged_data$received_date,
-                                   format = "%m/%d/%y")
+                                     format = "%m/%d/%y")
 merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
-                                   format = "%m/%d/%y")
+                                             format = "%m/%d/%y")
 
 
 ## Write out data
 # Change file name!
-write.xlsx(merged_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/campyv3.xlsx")
+write.xlsx(merged_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/EHEC R results.xlsx")
 
