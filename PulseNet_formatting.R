@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 10/3/2024
+# Last updated: 10/17/2024
 # Notes: Format PulseNet 2.0 data from LIMS export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -17,6 +17,7 @@ pacman::p_load(
 ## Read data
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
+# Remember to open this file first and save as a new file before running this line.
 lims <- read_xls("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712v2.xls", col_names = T, skip = 1)
 lims <- janitor::clean_names(lims)
 
@@ -66,10 +67,13 @@ lims <- mutate(lims,
 # Sequencer Run ID
 lims$SequencerRun_id <- ""
 
+# LabID field
+lims$LabID <- "UT"
+
 
 ## Select columns
 cleaned_data <- lims %>% select(Key, SourceCountry, SourceState, SourceType,
-                                PatientAgeDays, PatientAgeMonths, PatientAgeYears,
+                                PATIENTAGEDAYS, PATIENTAGEMONTHS, PATIENTAGEYEARS,
                                 PatientSex, SourceSite, IsolatDate, ReceivedDate,
                                 WGS_Lab_ReceivedDate, Genus, SequencerRun_id)
 
@@ -79,6 +83,3 @@ cleaned_data <- cleaned_data %>% filter(Key != "UT_Folder_Summary_Test_PFGE.rpt"
 
 ## Write finished data
 write_xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712readyfor2.0.xlsx")
-
-
-
