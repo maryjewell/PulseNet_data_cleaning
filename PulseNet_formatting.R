@@ -33,7 +33,7 @@ lims$SourceType <- "Human"
 # Format age variables
 lims$PATIENTAGEDAYS <- ""
 lims$PATIENTAGEMONTHS <- ifelse(grepl("mo", lims$age), lims$age, "")
-lims$PATIENTAGEMONTHS <- gsub("mo", "", lims$PatientAgeMonths)
+lims$PATIENTAGEMONTHS <- gsub("mo", "", lims$PATIENTAGEMONTHS)
 lims$PATIENTAGEYEARS <- ifelse(grepl("mo", lims$age) == F, lims$age, "")
 
 # Patient sex
