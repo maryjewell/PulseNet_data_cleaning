@@ -18,7 +18,7 @@ pacman::p_load(
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
 # Remember to open this file first and save as a new file before running this line.
-lims <- read_xls("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712v2.xls", col_names = T, skip = 1)
+lims <- read_xls("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/ut-m03999-241016 - 2.0.xls", col_names = T, skip = 1)
 lims <- janitor::clean_names(lims)
 
 ## Create/clean variables
@@ -75,11 +75,12 @@ lims$LabID <- "UT"
 cleaned_data <- lims %>% select(Key, SourceCountry, SourceState, SourceType,
                                 PATIENTAGEDAYS, PATIENTAGEMONTHS, PATIENTAGEYEARS,
                                 PatientSex, SourceSite, IsolatDate, ReceivedDate,
-                                WGS_Lab_ReceivedDate, Genus, SequencerRun_id)
+                                WGS_Lab_ReceivedDate, Genus, SequencerRun_id, LabID)
 
 # Remove footer
 cleaned_data <- cleaned_data %>% filter(Key != "UT_Folder_Summary_Test_PFGE.rpt")
 
 
 ## Write finished data
-write_xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/2021712readyfor2.0.xlsx")
+write_xlsx(cleaned_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/LIMS Data/Test10.17.xlsx")
+
