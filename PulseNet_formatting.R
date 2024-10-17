@@ -31,10 +31,10 @@ lims$SourceState <- "UT"
 lims$SourceType <- "Human"
 
 # Format age variables
-lims$PatientAgeDays <- ""
-lims$PatientAgeMonths <- ifelse(grepl("mo", lims$age), lims$age, "")
-lims$PatientAgeMonths <- gsub("mo", "", lims$PatientAgeMonths)
-lims$PatientAgeYears <- ifelse(grepl("mo", lims$age) == F, lims$age, "")
+lims$PATIENTAGEDAYS <- ""
+lims$PATIENTAGEMONTHS <- ifelse(grepl("mo", lims$age), lims$age, "")
+lims$PATIENTAGEMONTHS <- gsub("mo", "", lims$PatientAgeMonths)
+lims$PATIENTAGEYEARS <- ifelse(grepl("mo", lims$age) == F, lims$age, "")
 
 # Patient sex
 lims$PatientSex <- ifelse(lims$sex == "M", "MALE", "FEMALE")
