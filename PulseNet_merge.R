@@ -114,11 +114,11 @@ merged_data$dob <- as.POSIXct(merged_data$dob, format="%m/%d/%Y %I:%M:%S %p")
 merged_data$dob <- format(merged_data$dob, "%m/%d/%Y")
 
 merged_data$isolat_date <- as.Date(merged_data$isolat_date,
-                                   format = "%m/%d/%y")
+                                   format = "%m/%d/%Y")
 merged_data$received_date <- as.Date(merged_data$received_date,
-                                     format = "%m/%d/%y")
+                                     format = "%m/%d/%Y")
 merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
-                                             format = "%m/%d/%y")
+                                             format = "%m/%d/%Y")
 
 
 # Order final data by matching ids with pulsenet data
