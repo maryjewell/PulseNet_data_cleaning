@@ -1,8 +1,18 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 1/6/2025
+# Last updated: 1/10/2025
 # Notes: Merge PulseNet 2.0 data with PHI
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# HOW TO USE THIS SCRIPT:
+# Every time this script is run, three things need to be updated:
+# 1. Data inputs: Update the file paths for the input files. Pulsenet (line 34) is 
+#    the most recent PN 2.0 data. Phi_new (line 35) is the most recent daily Ent_Summary
+#    file from LIMS. These files should all be CSV files - if they are not, open them in Excel
+#    and click save as -> .csv.
+# 2. Pathogen name: Select the correct pathogen in the pathogen_select function (line 106).
+# 3. Data output: Update the file name for the final result that is being saved at the end 
+#    of the script (line 145).
 
 
 ##~~~~~~~~~~~
@@ -14,15 +24,19 @@
 pacman::p_load(
   tidyverse, # data manipulation
   janitor,   # clean column names
-  openxlsx,   # read and write Excel files
+  openxlsx,  # read and write Excel files
   readxl
 )
 
 ## Read data
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
-pulsenet <- read_excel("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/Salmonella PN 2.0 10.3.24.xlsx")
-phi <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_10_02_2024.csv")
+pulsenet <- read.csv("C:/Jenni R Scripts/Escherichia full metadata report.csv")
+phi_new <- read.csv("C:/Jenni R Scripts/Ent_Summary_Weekly_12_27_2024.csv")
+# No need to update this one:
+phi_old <- read.csv("C:/Jenni R Scripts/Ent_Summary_Weekly_12_27_2024.csv")
+
+phi <- rbind(phi_old, phi_new)
 
 
 ##~~~~~~~~~~~~~~~~~~~
@@ -126,7 +140,8 @@ merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
 ordered_data <- merged_data[match(pulsenet$key, merged_data$key), ]
 
 
-
 ## Write out data
 # Remember to change the file name here!
-write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2024/PN 2.0 Reports/EHEC R results.xlsx")
+write.xlsx(ordered_data, "C:/Jenni R Scripts/test_merged_result.xlsx")
+
+
