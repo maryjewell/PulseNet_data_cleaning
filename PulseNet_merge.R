@@ -10,9 +10,9 @@
 #    the most recent PN 2.0 data. Phi_new (line 35) is the most recent daily Ent_Summary
 #    file from LIMS. These files should all be CSV files - if they are not, open them in Excel
 #    and click save as -> .csv.
-# 2. Pathogen name: Select the correct pathogen in the pathogen_select function (line 106).
+# 2. Pathogen name: Select the correct pathogen in the pathogen_select function (line 143).
 # 3. Data output: Update the file name for the final result that is being saved at the end 
-#    of the script (line 145).
+#    of the script (line 182).
 
 
 ##~~~~~~~~~~~
@@ -55,7 +55,7 @@ pathogen_select <- function(data, pathogen) {
   # Select column names for salmonella
   if (pathogen == "salmonella") {
     data <- data %>% select(any_of(c("key", "collection_date", "serotype_wgs", "source_type", "source_site",
-                                     "patient_sex", "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_sex", "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "antigen_form_wgs", "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession", "exposure",
                                      "type_details", "rep_code", "source_state")))
@@ -63,16 +63,18 @@ pathogen_select <- function(data, pathogen) {
   # Select column names for campylobacter
   else if (pathogen == "campylobacter") {
     data <- data %>% select(any_of(c("key", "collection_date", "genus", "species", "subspecies", "source_type",
-                                     "source_site", "patient_sex", "patientageyears", "patientagemonths",
-                                     "patientagedays", "phl_received_date", "allele_code", "outbreak",
+                                     "source_site", "patient_sex", "patient_age_years", 
+                                     "patient_age_months", "patient_age_days", "phl_received_date", 
+                                     "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession", "exposure",
                                      "type_details", "rep_code", "source_state")))
   }
   # Select column names for listeria
   else if (pathogen == "listeria") {
     data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies", "source_type",
-                                     "source_site", "patient_sex", "patientageyears", "patientagemonths",
-                                     "patientagedays", "phl_received_date", "allele_code", "outbreak",
+                                     "source_site", "patient_sex", "patient_age_years", 
+                                     "patient_age_months", "patient_age_days", "phl_received_date", 
+                                     "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession", "exposure",
                                      "type_details", "rep_code", "source_state")))
   }
@@ -80,7 +82,7 @@ pathogen_select <- function(data, pathogen) {
   else if (pathogen == "ecoli") {
     data <- data %>% select(any_of(c("key", "collection_date", "pathotype", "escherichia_group", "serotype_wgs",
                                      "toxin_wgs", "source_type", "source_site", "patient_sex",
-                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "allele_code", "outbreak", "pulse_net_upload_date",
                                      "wgs_id", "ncbi_accession", "exposure", "type_details", "rep_code",
                                      "source_state", "virulence_marker")))
@@ -89,7 +91,7 @@ pathogen_select <- function(data, pathogen) {
   else if (pathogen == "vibrio") {
     data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies", "serotype_wgs",
                                      "toxin_wgs", "source_type", "source_site", "patient_sex",
-                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession", "exposure",
                                      "type_details", "rep_code", "source_state")))
@@ -99,7 +101,7 @@ pathogen_select <- function(data, pathogen) {
   else if (pathogen == "yersinia") {
     data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies",
                                      "source_type", "source_site", "patient_sex",
-                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession",
                                      "type_details", "rep_code", "source_state")))
@@ -111,7 +113,7 @@ pathogen_select <- function(data, pathogen) {
   else if (pathogen == "cronobacter") {
     data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies",
                                      "source_type", "source_site", "patient_sex",
-                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession",
                                      "type_details", "rep_code", "source_state")))
@@ -122,7 +124,7 @@ pathogen_select <- function(data, pathogen) {
     data <- data %>% select(any_of(c("key", "collection_date", "toxin_subtype", 
                                      "botulism_type", "species", "subspecies",
                                      "source_type", "source_site", "patient_sex",
-                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "patient_age_years", "patient_age_months", "patient_age_days",
                                      "phl_received_date", "allele_code", "outbreak",
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession",
                                      "type_details", "rep_code", "source_state")))
@@ -178,7 +180,6 @@ ordered_data <- merged_data[match(pulsenet$key, merged_data$key), ]
 ## Write out data
 # Remember to change the file name here!
 write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2025/Listeria WGS PN 2.0 2.7.25 final.xlsx")
-
 
 
 
