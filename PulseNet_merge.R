@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 2/13/2025
+# Last updated: 10/16/2025
 # Notes: Merge PulseNet 2.0 data with PHI
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -95,13 +95,48 @@ pathogen_select <- function(data, pathogen) {
                                      "type_details", "rep_code", "source_state")))
   }
   
+  # Select column names for yersinia
+  else if (pathogen == "yersinia") {
+    data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies",
+                                     "source_type", "source_site", "patient_sex",
+                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "phl_received_date", "allele_code", "outbreak",
+                                     "pulse_net_upload_date", "wgs_id", "ncbi_accession",
+                                     "type_details", "rep_code", "source_state")))
+  }
+
+  
+  
+  # Select column names for cronobacter
+  else if (pathogen == "cronobacter") {
+    data <- data %>% select(any_of(c("key", "collection_date", "species", "subspecies",
+                                     "source_type", "source_site", "patient_sex",
+                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "phl_received_date", "allele_code", "outbreak",
+                                     "pulse_net_upload_date", "wgs_id", "ncbi_accession",
+                                     "type_details", "rep_code", "source_state")))
+  }
+  
+  # Select column names for clostridium
+  else if (pathogen == "clostridium") {
+    data <- data %>% select(any_of(c("key", "collection_date", "toxin_subtype", 
+                                     "botulism_type", "species", "subspecies",
+                                     "source_type", "source_site", "patient_sex",
+                                     "patientageyears", "patientagemonths", "patientagedays",
+                                     "phl_received_date", "allele_code", "outbreak",
+                                     "pulse_net_upload_date", "wgs_id", "ncbi_accession",
+                                     "type_details", "rep_code", "source_state")))
+  }
+
+  
   # Return the modified dataset
   return(data)
   
 }
 
 # Use this function to select variables based on the pathogen type.
-# Replace the word in quotes with "salmonella", "campylobacter", "listeria", "ecoli", or "vibrio".
+# Replace the word in quotes with "salmonella", "campylobacter", "listeria", "ecoli", 
+#                                 "vibrio", "yersinia", "cronobacter", or "clostridium"
 # Check to make sure the pathogen type is all lowercase and is spelled correctly.
 pulsenet <- pathogen_select(data = pulsenet, "ecoli")
 
@@ -143,6 +178,7 @@ ordered_data <- merged_data[match(pulsenet$key, merged_data$key), ]
 ## Write out data
 # Remember to change the file name here!
 write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2025/Listeria WGS PN 2.0 2.7.25 final.xlsx")
+
 
 
 
