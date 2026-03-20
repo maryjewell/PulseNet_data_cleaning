@@ -1,10 +1,11 @@
 # Author: Mary Jewell
 # Date created: 3/19/2026
-# Last updated: 3/19/2026
+# Last updated: 3/20/2026
 # Notes: Extract data from WGS Sample Tracking sheet and format for CSV upload 
 # to CDC RedCAP.
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+rm(list = ls())
 # Load libraries
 library(googledrive)
 library(googlesheets4)
@@ -24,34 +25,25 @@ wgs_tracking  <- read_sheet("https://docs.google.com/spreadsheets/d/1JurSedOCjkD
 wgs_tracking <- janitor::clean_names(wgs_tracking)
 
 # Filter for rows successfully sequenced (valid sequencing run ID)
-wgs_tracking <- wgs_tracking %>% filter(!is.na(successful_sequencing_run))
+# and not previously submitted (blank value in uploaded_to_red_cap)
+wgs_tracking <- wgs_tracking %>% 
+  filter(is.na(uploaded_to_red_cap) & # Not previously uploaded
+           !is.na(successful_sequencing_run) &  # Successfully sequenced
+           lab_accession != "DO NOT EDIT THIS LINE!!!!") # Not the blank line
 
-# Filter rows since the beginning of 2026
-wgs_tracking <- wgs_tracking %>% filter(extraction_date > "2025-12-30")
 
 # Create dataframe of variables needed for CDC submission
-cdc_submit <- data.frame(record_id = wgs_tracking$lab_accession,
-                         arln_specimen_id = wgs_tracking$lab_accession,
+cdc_submit <- data.frame(record_id = as.character(wgs_tracking$lab_accession),
+                         arln_specimen_id = as.character(wgs_tracking$lab_accession),
                          phl = "UT",
                          wgs_status = "WGS Successful",
-                         wgs_id = arln_wgs_id,
-                         srr_number = sra_number,
-                         wgs_date_put_on_sequencer = paste0("20", stringr::str_sub(x, -6, -1)))
+                         wgs_id = as.character(wgs_tracking$arln_wgs_id),
+                         srr_number = as.character(wgs_tracking$sra_number),
+                         wgs_date_put_on_sequencer = paste0("20", stringr::str_sub(wgs_tracking$successful_sequencing_run, -6, -1)))
 
 
-# Filter submission dataset by rows not found in last submission
-last_submission <- read.csv("path/to/file")
-result <- anti_join(cdc_submit, df2, by = "record_id")
 
 # Write submission CSV
 write.csv(result, "path/to/file")
-
-# record_id = lab accession number
-# arln_specimen_id = lab accession number
-# phl = UT
-# wgs_status = if non NA value in successful sequencing run, then "WGS Successful" All other rows not included
-# wgs_id = arln_wgs_id
-# srr_number = sra number
-# wgs_date_put_on_sequencer = 20 + last 6 digits of the run name
 
 
