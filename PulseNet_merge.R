@@ -1,6 +1,6 @@
 # Author: Mary Jewell
 # Date created: 9/11/2024
-# Last updated: 10/16/2025
+# Last updated: 7/28/2026
 # Notes: Merge PulseNet 2.0 data with PHI
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -14,7 +14,7 @@
 # 3. Data output: Update the file name for the final result that is being saved at the end 
 #    of the script (line 182).
 
-
+rm(list = ls())
 ##~~~~~~~~~~~
 # Setup ####
 ##~~~~~~~~~~~
@@ -31,10 +31,14 @@ pacman::p_load(
 ## Read data
 # Replace these file paths with the correct paths on your computer
 # Important note: all slashes in file path should be / forward slashes!
-pulsenet <- read.csv("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2025/Listeria WGS PN 2.0 2.7.25.csv")
-phi_new <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_02_06_2025.csv")
+pulsenet <- read.csv("G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2026/Campy WGS PN 2.0 7.28.26.csv")
+phi_new <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_07_27_2026.csv")
 # Update this one to most recent weekly file updated every Friday:
-phi_old <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_Weekly_02_07_2025.csv")
+phi_old <- read.csv("L:/Shared_Files/Mirth/COVID_data_import/Ent_Summary_Weekly_07_24_2026.csv",row.names = NULL)
+
+phi_old <- phi_old %>% select("Sample.Number", "Last.Name", "First.Name", "DOB", 
+                              "Collection.Date", "Received.Date", "Released.Date",
+                              "Organism", "Customer.Code", "Customer.Name")
 
 phi <- rbind(phi_old, phi_new)
 
@@ -106,7 +110,7 @@ pathogen_select <- function(data, pathogen) {
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession",
                                      "type_details", "rep_code", "source_state")))
   }
-
+  
   
   
   # Select column names for cronobacter
@@ -129,7 +133,7 @@ pathogen_select <- function(data, pathogen) {
                                      "pulse_net_upload_date", "wgs_id", "ncbi_accession",
                                      "type_details", "rep_code", "source_state")))
   }
-
+  
   
   # Return the modified dataset
   return(data)
@@ -140,7 +144,7 @@ pathogen_select <- function(data, pathogen) {
 # Replace the word in quotes with "salmonella", "campylobacter", "listeria", "ecoli", 
 #                                 "vibrio", "yersinia", "cronobacter", or "clostridium"
 # Check to make sure the pathogen type is all lowercase and is spelled correctly.
-pulsenet <- pathogen_select(data = pulsenet, "ecoli")
+pulsenet <- pathogen_select(data = pulsenet, "campylobacter")
 
 
 # Remove UT___ from ID numbers
@@ -166,9 +170,9 @@ merged_data$dob <- as.POSIXct(merged_data$dob, format="%m/%d/%Y %I:%M:%S %p")
 merged_data$dob <- format(merged_data$dob, "%m/%d/%Y")
 
 merged_data$collection_date <- as.Date(merged_data$collection_date,
-                                   format = "%m/%d/%Y")
+                                       format = "%m/%d/%Y")
 merged_data$phl_received_date <- as.Date(merged_data$phl_received_date,
-                                     format = "%m/%d/%Y")
+                                         format = "%m/%d/%Y")
 merged_data$pulse_net_upload_date <- as.Date(merged_data$pulse_net_upload_date,
                                              format = "%m/%d/%Y")
 
@@ -179,7 +183,5 @@ ordered_data <- merged_data[match(pulsenet$key, merged_data$key), ]
 
 ## Write out data
 # Remember to change the file name here!
-write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2025/Listeria WGS PN 2.0 2.7.25 final.xlsx")
-
-
+write.xlsx(ordered_data, "G:/MICRO/MOLECULAR LABORATORY/PFGEProgram/WGS/Epi reports/2026/Campy WGS PN 2.0 7.28.26 final.xlsx")
 
